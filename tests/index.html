@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Score Dial Tests</title>
+  <style>
+    body { font: 15px/1.5 system-ui, sans-serif; margin: 16px; background: #fff; color: #15171c; }
+    li.ok::marker { content: "✓  "; color: #1f8a3b; }
+    li.fail { color: #c62828; }
+    li.fail::marker { content: "✗  "; }
+    @media (prefers-color-scheme: dark) { body { background: #14171f; color: #eef0f4; } }
+  </style>
+</head>
+<body>
+  <h1 id="summary">Running…</h1>
+  <ul id="out"></ul>
+  <script type="module">
+    import { runAll } from './tests.mjs';
+    const results = runAll();
+    const out = document.getElementById('out');
+    for (const r of results) {
+      const li = document.createElement('li');
+      li.className = r.ok ? 'ok' : 'fail';
+      li.textContent = r.ok ? r.name : `${r.name}: ${r.error}`;
+      out.append(li);
+    }
+    const passed = results.filter((r) => r.ok).length;
+    document.getElementById('summary').textContent = `${passed}/${results.length} passed`;
+  </script>
+</body>
+</html>
