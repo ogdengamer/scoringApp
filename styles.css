@@ -1,0 +1,310 @@
+:root {
+  --bg: #f4f5f7;
+  --surface: #ffffff;
+  --text: #15171c;
+  --muted: #6b7280;
+  --border: #e3e5ea;
+  --track: #e8eaef;
+  --tick: #c5c9d2;
+  --tick-major: #8b919e;
+  --hub: #ffffff;
+  --pos: #1f8a3b;
+  --neg: #c62828;
+  --danger: #c62828;
+  --accent: #2e86de;
+  --shadow: 0 6px 24px rgba(20, 23, 31, 0.08);
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #14171f;
+    --surface: #1e222c;
+    --text: #eef0f4;
+    --muted: #9aa1ae;
+    --border: #2d3240;
+    --track: #2a2f3b;
+    --tick: #3d4352;
+    --tick-major: #6f7686;
+    --hub: #1e222c;
+    --pos: #4cc56b;
+    --neg: #ff6b6b;
+    --danger: #ff6b6b;
+    --shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: #14171f;
+  --surface: #1e222c;
+  --text: #eef0f4;
+  --muted: #9aa1ae;
+  --border: #2d3240;
+  --track: #2a2f3b;
+  --tick: #3d4352;
+  --tick-major: #6f7686;
+  --hub: #1e222c;
+  --pos: #4cc56b;
+  --neg: #ff6b6b;
+  --danger: #ff6b6b;
+  --shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+
+html, body { height: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  display: flex;
+  flex-direction: column;
+  min-height: 100svh;
+  padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior: none;
+}
+
+button { font: inherit; color: inherit; }
+
+.btn {
+  min-height: 44px;
+  padding: 0 18px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  cursor: pointer;
+  font-weight: 600;
+}
+.btn:active { transform: translateY(1px); }
+.btn:disabled { opacity: 0.4; cursor: default; }
+.btn.ghost { background: transparent; }
+.btn.primary { background: var(--accent); border-color: transparent; color: #fff; }
+.btn.danger { color: var(--danger); background: transparent; }
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px 0;
+}
+.topbar h1 { font-size: 18px; margin: 0; letter-spacing: 0.02em; }
+
+/* Players strip */
+.players {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 12px 16px;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+}
+.players::-webkit-scrollbar { display: none; }
+
+.player {
+  --pc: var(--accent);
+  flex: 0 0 auto;
+  min-width: 96px;
+  padding: 10px 14px;
+  border-radius: 14px;
+  border: 2px solid transparent;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  text-align: left;
+  cursor: pointer;
+  scroll-snap-align: start;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  position: relative;
+}
+.player::before {
+  content: "";
+  position: absolute;
+  left: 10px; right: 10px; top: 0;
+  height: 4px;
+  border-radius: 0 0 4px 4px;
+  background: var(--pc);
+}
+.player[aria-pressed="true"] { border-color: var(--pc); }
+.player .name {
+  display: block;
+  font-size: 13px;
+  color: var(--muted);
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.player .score { display: block; font-size: 26px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.player .lead { color: #e6a700; font-size: 13px; margin-left: 4px; }
+.player.add {
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+  font-size: 15px;
+  box-shadow: none;
+  border: 2px dashed var(--border);
+  background: transparent;
+}
+.player.add::before { display: none; }
+
+/* Stage */
+.stage {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 4px 16px 12px;
+}
+
+.preview {
+  min-height: 34px;
+  font-size: 22px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+.preview .who { color: var(--accent); }
+.preview .arrow { color: var(--muted); margin: 0 6px; }
+
+/* Dial */
+.dial {
+  position: relative;
+  width: min(88vw, 50svh, 420px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: grab;
+  outline: none;
+  filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.12));
+}
+.dial.active { cursor: grabbing; }
+.dial:focus-visible { box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 45%, transparent); }
+.dial-svg { width: 100%; height: 100%; display: block; overflow: visible; }
+.dial-track { fill: var(--surface); stroke: var(--track); stroke-width: 8; }
+.dial-arc {
+  fill: none;
+  stroke: var(--pos);
+  stroke-width: 8;
+  stroke-linecap: round;
+  stroke-dasharray: 0 999;
+  transition: stroke 0.15s;
+}
+.dial[data-sign="neg"] .dial-arc { stroke: var(--neg); }
+.dial[data-sign="zero"] .dial-arc { stroke: var(--tick-major); }
+.tick { stroke: var(--tick); stroke-width: 1.4; stroke-linecap: round; }
+.tick.major { stroke: var(--tick-major); stroke-width: 2.4; }
+.dial-grip { fill: var(--accent); }
+.dial-hub { fill: var(--hub); stroke: var(--border); stroke-width: 1; }
+
+.dial-readout {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  text-align: center;
+  pointer-events: none;
+}
+.dial-delta {
+  font-size: clamp(44px, 14vw, 72px);
+  font-weight: 800;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+}
+.dial[data-sign="pos"] .dial-delta { color: var(--pos); }
+.dial[data-sign="neg"] .dial-delta { color: var(--neg); }
+.dial-hint { margin-top: 6px; font-size: 13px; color: var(--muted); }
+
+.nudges { display: flex; gap: 12px; }
+.nudges .btn { min-width: 72px; font-size: 18px; }
+.nudges #undo { font-size: 15px; }
+
+/* History */
+.history {
+  margin: 0 16px 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+.history summary {
+  padding: 12px 14px;
+  cursor: pointer;
+  font-weight: 600;
+  list-style-position: inside;
+}
+.history summary span { color: var(--muted); font-weight: 400; }
+.history ol {
+  list-style: none;
+  margin: 0;
+  padding: 0 14px 10px;
+  max-height: 32svh;
+  overflow-y: auto;
+}
+.history li {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 7px 0;
+  border-top: 1px solid var(--border);
+  font-variant-numeric: tabular-nums;
+}
+.history .dot { width: 9px; height: 9px; border-radius: 50%; flex: 0 0 auto; align-self: center; }
+.history .hname { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.history .hdelta { font-weight: 700; }
+.history .hdelta.pos { color: var(--pos); }
+.history .hdelta.neg { color: var(--neg); }
+.history .htotal, .history .htime { color: var(--muted); font-size: 13px; }
+.history .empty { color: var(--muted); border: 0; }
+
+/* Player dialog */
+dialog {
+  border: 0;
+  border-radius: 18px;
+  padding: 20px;
+  width: min(92vw, 360px);
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: var(--shadow);
+}
+dialog::backdrop { background: rgba(0, 0, 0, 0.45); }
+dialog h2 { margin: 0 0 14px; font-size: 18px; }
+.field { display: grid; gap: 6px; font-size: 13px; color: var(--muted); }
+.field input {
+  font: inherit;
+  font-size: 17px;
+  color: var(--text);
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+}
+.swatches { border: 0; padding: 0; margin: 16px 0; display: flex; flex-wrap: wrap; gap: 10px; }
+.swatches legend { font-size: 13px; color: var(--muted); margin-bottom: 8px; padding: 0; }
+.swatches label { position: relative; }
+.swatches input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+.swatches span {
+  display: block;
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  box-shadow: inset 0 0 0 2px var(--surface);
+}
+.swatches input:checked + span { border-color: var(--text); }
+.swatches input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: 2px; }
+.dialog-actions { display: flex; gap: 8px; align-items: center; }
+.dialog-actions .spacer { flex: 1; }
+.dialog-actions .btn { padding: 0 14px; }
+
+@media (min-height: 760px) {
+  .stage { gap: 20px; }
+}

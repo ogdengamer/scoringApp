@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Score Dial</title>
+  <meta name="description" content="Board game score keeper with a rotary dial.">
+  <meta name="theme-color" content="#14171f">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon-192.png" type="image/png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <h1>Score Dial</h1>
+    <button class="btn ghost" id="newGame" type="button">New game</button>
+  </header>
+
+  <section class="players" id="players" aria-label="Players"></section>
+
+  <main class="stage">
+    <div class="preview" id="preview" aria-live="polite"></div>
+    <div id="dial"></div>
+    <div class="nudges">
+      <button class="btn" type="button" data-nudge="-1" aria-label="Subtract one">−1</button>
+      <button class="btn" type="button" id="undo">Undo</button>
+      <button class="btn" type="button" data-nudge="1" aria-label="Add one">+1</button>
+    </div>
+  </main>
+
+  <details class="history" id="historyPanel">
+    <summary>History <span id="historyCount"></span></summary>
+    <ol id="history"></ol>
+  </details>
+
+  <dialog id="playerDialog">
+    <form method="dialog" id="playerForm">
+      <h2>Player</h2>
+      <label class="field">Name
+        <input name="name" id="playerName" maxlength="24" autocomplete="off" required>
+      </label>
+      <fieldset class="swatches" id="swatches"><legend>Color</legend></fieldset>
+      <div class="dialog-actions">
+        <button class="btn danger" value="remove" id="removePlayer" formnovalidate>Remove</button>
+        <span class="spacer"></span>
+        <button class="btn ghost" value="cancel" formnovalidate>Cancel</button>
+        <button class="btn primary" value="save">Save</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
